@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jake the Plumbing Pro | Dallas #1 Plumber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #061020;
+    --blue: #1a4ed8;
+    --cyan: #00c8ff;
+    --cyan2: #00eaff;
+    --white: #f0f4ff;
+    --muted: #8fa0bc;
+    --pipe: #c0cfe0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: .4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(6,16,32,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0,200,255,0.12);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: .88rem; font-weight: 500; letter-spacing: .05em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    background: var(--cyan); color: var(--navy);
+    padding: .55rem 1.5rem; border-radius: 4px;
+    font-weight: 700; font-size: .88rem;
+    text-decoration: none; letter-spacing: .05em;
+    transition: background .2s, transform .15s;
+  }
+  .nav-cta:hover { background: var(--cyan2); transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    overflow: hidden;
+  }
+
+  /* animated pipe grid SVG background */
+  .pipe-bg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* glowing orb */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,200,255,.18) 0%, transparent 70%);
+    top: -100px; right: 0;
+    animation: orbFloat 8s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,78,216,.22) 0%, transparent 70%);
+    bottom: 0; left: -80px;
+    animation: orbFloat 10s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes orbFloat {
+    from { transform: translateY(0) scale(1); }
+    to   { transform: translateY(-40px) scale(1.08); }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(0,200,255,.1);
+    border: 1px solid rgba(0,200,255,.3);
+    color: var(--cyan); padding: .4rem 1rem;
+    border-radius: 100px; font-size: .8rem;
+    font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-badge::before {
+    content: ''; display: block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: .4; transform: scale(1.5); }
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: .95;
+    letter-spacing: 2px;
+    animation: fadeUp .7s .1s ease both;
+  }
+  h1 .accent { color: var(--cyan); display: block; }
+  h1 .outline {
+    -webkit-text-stroke: 2px var(--white);
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 1.4rem;
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 480px;
+    animation: fadeUp .7s .2s ease both;
+  }
+
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp .7s .3s ease both;
+  }
+  .btn-primary {
+    background: var(--cyan); color: var(--navy);
+    padding: .9rem 2.2rem; border-radius: 6px;
+    font-weight: 700; font-size: 1rem;
+    text-decoration: none; letter-spacing: .02em;
+    transition: transform .15s, box-shadow .2s;
+    box-shadow: 0 0 30px rgba(0,200,255,.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,200,255,.55);
+  }
+  .btn-ghost {
+    border: 1.5px solid rgba(0,200,255,.4);
+    color: var(--cyan);
+    padding: .9rem 2.2rem; border-radius: 6px;
+    font-weight: 600; font-size: 1rem;
+    text-decoration: none;
+    transition: background .2s;
+  }
+  .btn-ghost:hover { background: rgba(0,200,255,.08); }
+
+  .hero-phone {
+    margin-top: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+    animation: fadeUp .7s .4s ease both;
+  }
+  .phone-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(0,200,255,.12);
+    border: 1px solid rgba(0,200,255,.3);
+    display: flex; align-items: center; justify-content: center;
+    animation: ringPulse 2.5s ease infinite;
+  }
+  @keyframes ringPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(0,200,255,.4); }
+    50%      { box-shadow: 0 0 0 14px rgba(0,200,255,0); }
+  }
+  .phone-text small { display: block; font-size: .75rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  .phone-text strong { font-size: 1.4rem; color: var(--white); letter-spacing: 1px; }
+
+  /* hero stats strip */
+  .hero-stats {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+    display: flex;
+    border-top: 1px solid rgba(0,200,255,.1);
+    background: rgba(6,16,32,.7); backdrop-filter: blur(10px);
+  }
+  .stat {
+    flex: 1; padding: 1.4rem 2rem;
+    border-right: 1px solid rgba(0,200,255,.08);
+    animation: fadeUp .7s ease both;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; color: var(--cyan); letter-spacing: 1px;
+  }
+  .stat-label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: .1rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SERVICES ─── */
+  #services {
+    padding: 7rem 4rem;
+    background: linear-gradient(180deg, var(--deep) 0%, var(--navy) 100%);
+    position: relative;
+  }
+  .section-label {
+    font-size: .8rem; color: var(--cyan);
+    letter-spacing: .18em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: .6rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    letter-spacing: 1px; line-height: 1.05;
+    margin-bottom: 3.5rem;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: rgba(0,200,255,.08);
+    border: 1px solid rgba(0,200,255,.08);
+  }
+  .service-card {
+    background: var(--navy);
+    padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    transition: background .3s;
+    cursor: default;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    transform: scaleX(0);
+    transition: transform .4s ease;
+  }
+  .service-card:hover { background: rgba(26,78,216,.15); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    width: 52px; height: 52px; margin-bottom: 1.4rem;
+  }
+  .service-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 1px;
+    margin-bottom: .7rem;
+  }
+  .service-card p {
+    font-size: .88rem; color: var(--muted); line-height: 1.65;
+  }
+
+  /* ─── WHY US ─── */
+  #why {
+    padding: 7rem 4rem;
+    background: var(--deep);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .why-visual {
+    position: relative;
+  }
+  /* animated SVG wrench / drop */
+  .why-visual svg { width: 100%; max-width: 440px; }
+
+  .feature-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .feature-list li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: rgba(0,200,255,.04);
+    border: 1px solid rgba(0,200,255,.1);
+    border-radius: 8px;
+    transition: border-color .25s;
+  }
+  .feature-list li:hover { border-color: rgba(0,200,255,.35); }
+  .feat-icon {
+    flex-shrink: 0; width: 36px; height: 36px;
+    background: rgba(0,200,255,.12);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feat-icon svg { width: 18px; height: 18px; }
+  .feat-text strong { display: block; font-size: .95rem; margin-bottom: .2rem; }
+  .feat-text span { font-size: .83rem; color: var(--muted); }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonials {
+    padding: 7rem 4rem;
+    background: var(--navy);
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .testimonial-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(0,200,255,.1);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '"';
+    position: absolute; top: 1rem; right: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem; color: rgba(0,200,255,.1);
+    line-height: 1;
+  }
+  .stars { color: var(--cyan); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testimonial-card p { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .reviewer { display: flex; align-items: center; gap: .8rem; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .9rem; color: var(--navy);
+  }
+  .reviewer-name strong { display: block; font-size: .9rem; }
+  .reviewer-name span { font-size: .78rem; color: var(--muted); }
+
+  /* ─── CTA BANNER ─── */
+  #cta {
+    padding: 6rem 4rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--navy) 0%, #07213d 100%);
+  }
+  #cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,200,255,.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  #cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: 2px; position: relative; z-index: 1;
+  }
+  #cta p { color: var(--muted); margin: 1rem 0 2.5rem; font-size: 1.05rem; position: relative; z-index: 1; }
+  #cta .btn-primary { position: relative; z-index: 1; display: inline-block; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(0,200,255,.08);
+    padding: 3rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1.5rem;
+    font-size: .83rem; color: var(--muted);
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--white);
+  }
+  .footer-logo span { color: var(--cyan); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── PIPE SVG ANIMATION ─── */
+  @keyframes flowDash {
+    from { stroke-dashoffset: 400; }
+    to   { stroke-dashoffset: 0; }
+  }
+  .flow-path {
+    stroke-dasharray: 12 6;
+    stroke-dashoffset: 400;
+    animation: flowDash 3s linear infinite;
+  }
+
+  /* ─── WATER DROP ANIMATION ─── */
+  @keyframes dropFall {
+    0%   { transform: translateY(0) scaleY(1); opacity: 1; }
+    80%  { transform: translateY(48px) scaleY(1.1); opacity: 1; }
+    100% { transform: translateY(60px) scaleY(.4); opacity: 0; }
+  }
+  .drop {
+    animation: dropFall 2.2s ease-in infinite;
+  }
+  .drop:nth-child(2) { animation-delay: .7s; }
+  .drop:nth-child(3) { animation-delay: 1.4s; }
+
+  /* wrench spin */
+  @keyframes wrenchSpin {
+    0%,100% { transform: rotate(-12deg); }
+    50%      { transform: rotate(12deg); }
+  }
+  .wrench { transform-origin: 50% 80%; animation: wrenchSpin 3s ease-in-out infinite; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 7rem 1.5rem 5rem; }
+    .hero-stats { position: static; }
+    #services, #testimonials, #cta, #why, footer { padding: 4rem 1.5rem; }
+    #why { grid-template-columns: 1fr; }
+    .why-visual { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">Jake <span>Pro</span> Plumbing</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="tel:2147518381" class="nav-cta">📞 (214) 751-8381</a>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+
+  <!-- animated pipe grid background -->
+  <svg class="pipe-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00c8ff" stop-opacity="0.07"/>
+        <stop offset="100%" stop-color="#1a4ed8" stop-opacity="0.04"/>
+      </linearGradient>
+    </defs>
+    <!-- horizontal pipes -->
+    <line x1="0" y1="180" x2="1440" y2="180" stroke="#1a4ed8" stroke-width="1.5" stroke-opacity=".3"/>
+    <line x1="0" y1="420" x2="1440" y2="420" stroke="#00c8ff" stroke-width="1" stroke-opacity=".15"/>
+    <line x1="0" y1="680" x2="1440" y2="680" stroke="#1a4ed8" stroke-width="1.5" stroke-opacity=".2"/>
+    <!-- vertical pipes -->
+    <line x1="300" y1="0" x2="300" y2="900" stroke="#00c8ff" stroke-width="1" stroke-opacity=".12"/>
+    <line x1="780" y1="0" x2="780" y2="900" stroke="#1a4ed8" stroke-width="1.5" stroke-opacity=".18"/>
+    <line x1="1100" y1="0" x2="1100" y2="900" stroke="#00c8ff" stroke-width="1" stroke-opacity=".1"/>
+    <!-- connectors / elbows -->
+    <path d="M300,180 Q300,420 780,420" fill="none" stroke="#00c8ff" stroke-width="1.5" stroke-opacity=".2"/>
+    <path d="M780,420 Q1100,420 1100,680" fill="none" stroke="#1a4ed8" stroke-width="1.5" stroke-opacity=".18"/>
+    <!-- animated flow lines -->
+    <line class="flow-path" x1="0" y1="180" x2="1440" y2="180" stroke="#00c8ff" stroke-width="2.5" stroke-opacity=".6"/>
+    <line class="flow-path" x1="780" y1="0" x2="780" y2="900" stroke="#00eaff" stroke-width="2" stroke-opacity=".4" style="animation-delay:.8s"/>
+    <path class="flow-path" d="M300,180 Q300,420 780,420" fill="none" stroke="#00c8ff" stroke-width="2" stroke-opacity=".5" style="animation-delay:1.6s"/>
+    <!-- pipe end caps / fittings -->
+    <circle cx="300" cy="180" r="6" fill="#00c8ff" fill-opacity=".3"/>
+    <circle cx="780" cy="420" r="8" fill="#00c8ff" fill-opacity=".4"/>
+    <circle cx="1100" cy="680" r="6" fill="#1a4ed8" fill-opacity=".4"/>
+    <circle cx="780" cy="180" r="5" fill="#00c8ff" fill-opacity=".25"/>
+  </svg>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✦ Dallas's #1 Rated Plumber</div>
+    <h1>
+      <span>Dallas</span>
+      <span class="outline">Plumbing</span>
+      <span class="accent">Pros.</span>
+    </h1>
+    <p class="hero-sub">Licensed · Bonded · Insured. Rapid response, expert repairs, and 24/7 emergency service for residential & commercial properties across Dallas.</p>
+    <div class="hero-actions">
+      <a href="tel:2147518381" class="btn-primary">Call Now — It's Free</a>
+      <a href="#services" class="btn-ghost">Our Services ↓</a>
+    </div>
+    <div class="hero-phone">
+      <div class="phone-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.16a16 16 0 006.15 6.15l1.52-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+      </div>
+      <div class="phone-text">
+        <small>Available 24 / 7 — call anytime</small>
+        <strong>(214) 751-8381</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Emergency Service</div></div>
+    <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num">5K+</div><div class="stat-label">Jobs Completed</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Licensed & Insured</div></div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="section-label reveal">What We Fix</div>
+  <h2 class="section-title reveal">Full-Service <span style="color:var(--cyan)">Plumbing</span><br>Solutions</h2>
+
+  <div class="services-grid">
+
+    <!-- card 1 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <path d="M18 34 C18 30 22 28 26 26 C30 24 34 22 34 18" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="18" cy="36" r="3" fill="#00c8ff" opacity=".7"/>
+        <circle cx="34" cy="16" r="3" fill="#00c8ff" opacity=".7"/>
+        <path class="drop" d="M26 32 L24 37 Q24 40 26 40 Q28 40 28 37 Z" fill="#00c8ff" opacity=".8"/>
+      </svg>
+      <h3>Drain & Pipe Clog Removal</h3>
+      <p>Professional rooter service for stubborn clogs caused by tree roots, sludge, grease, and more — without damaging your pipes.</p>
+    </div>
+
+    <!-- card 2 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <rect x="16" y="30" width="20" height="10" rx="2" stroke="#00c8ff" stroke-width="2"/>
+        <path d="M21 30 L21 22 Q21 16 26 16 Q31 16 31 22 L31 30" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <path class="drop" d="M26 22 L24.5 26 Q24.5 28 26 28 Q27.5 28 27.5 26 Z" fill="#00c8ff" opacity=".8"/>
+      </svg>
+      <h3>Clogged Toilet Repair</h3>
+      <p>Emergency clogged toilet solutions with state-of-the-art equipment. We acknowledge your discomfort and respond fast.</p>
+    </div>
+
+    <!-- card 3 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <path d="M14 26 H22 Q24 26 24 28 L24 34" stroke="#00c8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M38 26 H30 Q28 26 28 24 L28 18" stroke="#00c8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26" cy="26" r="3" fill="#00c8ff" opacity=".6"/>
+      </svg>
+      <h3>Sewage Line Maintenance</h3>
+      <p>Pipe bursting, Perma-Liner re-lining, septic evaluation, and complete sewer repair for residential and commercial buildings.</p>
+    </div>
+
+    <!-- card 4 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <rect x="18" y="18" width="16" height="22" rx="3" stroke="#00c8ff" stroke-width="2"/>
+        <path d="M22 18 L22 14 Q22 12 26 12 Q30 12 30 14 L30 18" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M22 28 H30" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M22 32 H28" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h3>Hot Water Heater Service</h3>
+      <p>Installation, replacement, and repair of tank and tankless water heaters — gas or electric. Same-day service available.</p>
+    </div>
+
+    <!-- card 5 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <path d="M14 32 H38" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M14 32 Q14 38 20 38 H32 Q38 38 38 32" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 32 L20 20 Q20 16 26 16 Q32 16 32 20 L32 32" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h3>Water Line Repair</h3>
+      <p>24/7 water line restoration using top-grade materials. Dispatched within the hour — we fix it right the first time.</p>
+    </div>
+
+    <!-- card 6 -->
+    <div class="service-card reveal">
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="26" fill="rgba(0,200,255,.08)"/>
+        <!-- snowflake / freeze icon -->
+        <path d="M26 14 L26 38" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M14 26 L38 26" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M18 18 L34 34" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+        <path d="M34 18 L18 34" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="26" cy="26" r="3" fill="#00c8ff" opacity=".7"/>
+      </svg>
+      <h3>Frozen Pipe Thawing</h3>
+      <p>Emergency frozen pipe service to prevent costly bursts, mold, and property damage — available any time of day or night.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── WHY US ─── -->
+<section id="why">
+  <div class="why-visual">
+    <svg viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- background circle -->
+      <circle cx="220" cy="220" r="200" stroke="rgba(0,200,255,.07)" stroke-width="40"/>
+      <circle cx="220" cy="220" r="150" stroke="rgba(0,200,255,.05)" stroke-width="2" stroke-dasharray="8 6"/>
+
+      <!-- animated flow ring -->
+      <circle cx="220" cy="220" r="200" stroke="#00c8ff" stroke-width="2" stroke-dasharray="16 8" stroke-opacity=".25" class="flow-path" style="animation-duration:6s"/>
+
+      <!-- pipes -->
+      <rect x="120" y="210" width="200" height="20" rx="10" fill="rgba(0,200,255,.12)" stroke="#00c8ff" stroke-width="1.5" stroke-opacity=".4"/>
+      <rect x="210" y="120" width="20" height="200" rx="10" fill="rgba(0,200,255,.12)" stroke="#00c8ff" stroke-width="1.5" stroke-opacity=".4"/>
+
+      <!-- elbow top-left -->
+      <path d="M120 220 Q120 140 220 140" fill="none" stroke="#00c8ff" stroke-width="2" stroke-opacity=".3"/>
+      <!-- elbow bottom-right -->
+      <path d="M320 220 Q320 300 220 300" fill="none" stroke="#1a4ed8" stroke-width="2" stroke-opacity=".3"/>
+
+      <!-- water drops falling -->
+      <g>
+        <ellipse class="drop" cx="220" cy="310" rx="7" ry="10" fill="#00c8ff" opacity=".7"/>
+        <ellipse class="drop" cx="210" cy="310" rx="5" ry="7" fill="#00c8ff" opacity=".5"/>
+        <ellipse class="drop" cx="230" cy="310" rx="5" ry="7" fill="#00c8ff" opacity=".5"/>
+      </g>
+
+      <!-- wrench in center -->
+      <g class="wrench">
+        <path d="M200 200 L240 240" stroke="#00c8ff" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="197" cy="197" r="14" stroke="#00c8ff" stroke-width="3" fill="rgba(0,200,255,.12)"/>
+        <circle cx="243" cy="243" r="10" stroke="#00c8ff" stroke-width="3" fill="rgba(0,200,255,.12)"/>
+      </g>
+
+      <!-- corner fittings -->
+      <circle cx="220" cy="140" r="8" fill="#00c8ff" opacity=".5"/>
+      <circle cx="220" cy="300" r="8" fill="#00c8ff" opacity=".5"/>
+      <circle cx="120" cy="220" r="8" fill="#00c8ff" opacity=".5"/>
+      <circle cx="320" cy="220" r="8" fill="#00c8ff" opacity=".5"/>
+    </svg>
+  </div>
+
+  <div>
+    <div class="section-label reveal">Why Choose Jake</div>
+    <h2 class="section-title reveal">Built on Trust,<br><span style="color:var(--cyan)">Driven by Results</span></h2>
+
+    <ul class="feature-list">
+      <li class="reveal">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="feat-text">
+          <strong>Licensed, Bonded & Insured</strong>
+          <span>Full credentials for every job — residential and commercial.</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="feat-text">
+          <strong>Dispatched Within the Hour</strong>
+          <span>24/7 emergency response — we're there when it matters most.</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="feat-text">
+          <strong>Upfront Pricing, No Surprises</strong>
+          <span>We quote the job before we start — no hidden fees, ever.</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2" stroke-linecap="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+        </div>
+        <div class="feat-text">
+          <strong>Top-Grade Materials, Lasting Repairs</strong>
+          <span>We fix it right the first time so you don't call us twice.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section id="testimonials">
+  <div class="section-label reveal">Happy Customers</div>
+  <h2 class="section-title reveal">Dallas <span style="color:var(--cyan)">Trusts</span> Jake</h2>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p>Jake came out within 45 minutes at 11pm on a Sunday. Fixed our burst pipe fast and the price was totally fair. Cannot recommend them enough!</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">M</div>
+        <div class="reviewer-name"><strong>Maria T.</strong><span>Oak Cliff, Dallas</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p>Used Jake for a full hot water heater replacement at our office building. Professional crew, zero mess, done in one day. Outstanding service.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">D</div>
+        <div class="reviewer-name"><strong>David K.</strong><span>Uptown Dallas</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p>Had a stubborn drain clog for months that other plumbers couldn't fix. Jake's team cleared it in under an hour. Should've called sooner!</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">L</div>
+        <div class="reviewer-name"><strong>Lisa R.</strong><span>Lakewood, Dallas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section id="cta">
+  <h2 class="reveal">Got a Plumbing<br><span style="color:var(--cyan)">Emergency?</span></h2>
+  <p class="reveal">We're available around the clock. Call now for fast, friendly, professional service.</p>
+  <a href="tel:2147518381" class="btn-primary reveal">☎ (214) 751-8381 — Call Now</a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div>
+    <div class="footer-logo">Jake <span>Pro</span> Plumbing</div>
+    <div style="margin-top:.4rem">1410 Dragon St STE 716, Dallas, TX 75207</div>
+  </div>
+  <div>Licensed · Bonded · Insured · Dallas Chamber of Commerce Member</div>
+  <div>© 2025 jakeplumbingpro.com</div>
+</footer>
+
+<script>
+  // ─── scroll reveal ───
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
